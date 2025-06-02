@@ -69,7 +69,7 @@ public class Fox : MonoBehaviour
             crouchPressed = false;
 
         //Set the yVelocity Value
-        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
 
         //Check if we are touching a wall to slide on it
         WallCheck();
@@ -153,7 +153,7 @@ public class Fox : MonoBehaviour
         //Slide on the wall
         if (Physics2D.OverlapCircle(wallCheckCollider.position, wallCheckRadius, wallLayer)
             && Mathf.Abs(horizontalValue) > 0
-            && rb.velocity.y < 0
+            && rb.linearVelocity.y < 0
             && !isGrounded)
         {
             if(!isSliding)
@@ -162,16 +162,16 @@ public class Fox : MonoBehaviour
                 multipleJump = false;
             }
 
-            Vector2 v = rb.velocity;
+            Vector2 v = rb.linearVelocity;
             v.y = -slideFactor;
-            rb.velocity = v;
+            rb.linearVelocity = v;
             isSliding = true;
 
             if(Input.GetButtonDown("Jump"))
             {
                 availableJumps--;
 
-                rb.velocity = Vector2.up * jumpPower;
+                rb.linearVelocity = Vector2.up * jumpPower;
                 animator.SetBool("Jump", true);
             }
         }
@@ -196,7 +196,7 @@ public class Fox : MonoBehaviour
             multipleJump = true;
             availableJumps--;
 
-            rb.velocity = Vector2.up * jumpPower;
+            rb.linearVelocity = Vector2.up * jumpPower;
             animator.SetBool("Jump", true);
         }
         else
@@ -206,7 +206,7 @@ public class Fox : MonoBehaviour
                 multipleJump = true;
                 availableJumps--;
 
-                rb.velocity = Vector2.up * jumpPower;
+                rb.linearVelocity = Vector2.up * jumpPower;
                 animator.SetBool("Jump", true);
             }
 
@@ -214,7 +214,7 @@ public class Fox : MonoBehaviour
             {
                 availableJumps--;
 
-                rb.velocity = Vector2.up * jumpPower;
+                rb.linearVelocity = Vector2.up * jumpPower;
                 animator.SetBool("Jump", true);
             }
         }
@@ -250,9 +250,9 @@ public class Fox : MonoBehaviour
         if (crouchFlag)
             xVal *= crouchSpeedModifier;
         //Create Vec2 for the velocity
-        Vector2 targetVelocity = new Vector2(xVal, rb.velocity.y);
+        Vector2 targetVelocity = new Vector2(xVal, rb.linearVelocity.y);
         //Set the player's velocity
-        rb.velocity = targetVelocity;
+        rb.linearVelocity = targetVelocity;
  
         //If looking right and clicked left (flip to the left)
         if(facingRight && dir < 0)
@@ -270,7 +270,7 @@ public class Fox : MonoBehaviour
         //(0 idle , 4 walking , 8 running)
         //Set the float xVelocity according to the x value 
         //of the RigidBody2D velocity 
-        animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("xVelocity", Mathf.Abs(rb.linearVelocity.x));
         #endregion
     }   
     
